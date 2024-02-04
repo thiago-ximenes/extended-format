@@ -1,0 +1,19 @@
+{
+  "name": "format",
+  "version": "1.0.0",
+  "description": "A helper lib to turn easy format strings",
+  "main": "index.ts",
+  "repository": "git@github.com:thiago-ximenes/format.git",
+  "author": "Thiago Ximenes",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
+  }
+}
