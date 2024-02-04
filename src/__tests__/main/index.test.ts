@@ -1,12 +1,13 @@
-import Format from '../../main';
+import BaseFormat from '../../main';
 import OptionsType from "../../types/options-type";
 
 describe('Format', () => {
-    let format: Format;
+    let format: BaseFormat;
     let options: OptionsType;
 
     beforeEach(() => {
-        class ExtendedFormat extends Format {}
+        class ExtendedFormat extends BaseFormat {
+        }
 
         format = new ExtendedFormat();
         options = {
@@ -69,5 +70,37 @@ describe('Format', () => {
     test('should return formatted string when onlyLetters option is true', () => {
         options.onlyLetters = true;
         expect(format.format('a1b2c3', '#.#.#', options)).toBe('a.b.c');
+    });
+
+    test('should return secret string when value is not empty and isVisible is false', () => {
+        expect(format.secret('123456', {start: 2, end: 2, isVisible: false})).toBe('**34**');
+    });
+
+    test('should return secret string when value is not empty and isVisible is true', () => {
+        expect(format.secret('123456', {
+            start: 2,
+            end: 0,
+        })).toBe('12****');
+    });
+
+    test('should return special secret string when value is not empty', () => {
+        expect(format.specialSecret('example@example.com', {
+            start: [2, 1],
+            end: 0,
+            specialCharacter: ['@', '.']
+        })).toBe('ex*****@e******.com');
+    });
+
+    test('should return numeric string when value contains numbers', () => {
+        expect(format.numeric('a1b2c3')).toBe('123');
+    });
+
+    test('should return letters string when value contains letters', () => {
+        expect(format.letters('a1b2c3')).toBe('abc');
+    });
+
+    test('should set original value bucket', () => {
+        format.setOriginalValueBucket('123456', 'key');
+        expect(format.getValueBeforeFormat('key')).toBe('123456');
     });
 });
