@@ -103,4 +103,12 @@ describe('Format', () => {
         format.setOriginalValueBucket('123456', 'key');
         expect(format.getValueBeforeFormat('key')).toBe('123456');
     });
+
+    test('should return formatted string for different pattern separator', () => {
+        expect(format.format('123', '@ @ @', {patternSeparator: '@'})).toBe('1 2 3');
+    })
+
+    test('should return formatted secret string for special characters', () => {
+        expect(format.secret('example-example.com', {start: 2, end: 0, escapeEnd: 3, specialCharacter: ['-', '.']})).toBe('ex*****-*******.com');
+    })
 });

@@ -1,5 +1,5 @@
 {
-  "name": "format",
+  "name": "extended-format",
   "version": "1.0.0",
   "description": "A helper lib to turn easy format strings",
   "main": "index.ts",

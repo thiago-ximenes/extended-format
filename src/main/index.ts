@@ -6,6 +6,7 @@ import SpecialSecretOptionsType from "../types/special-secret-options-type";
 
 export default abstract class BaseFormat {
     protected options: OptionsType = {};
+    protected isSecret: boolean = false;
     protected value: string
     protected locale: Locale = 'pt-BR';
     protected originalValueBucket: Record<OriginalValueBucket, string> = {} as Record<OriginalValueBucket, string>;
@@ -64,7 +65,7 @@ export default abstract class BaseFormat {
      * @returns {this} The instance of the class to allow method chaining.
      */
     protected setIsSecret(isSecret: boolean) {
-        this.options.isSecret = isSecret;
+        this.isSecret = isSecret;
 
         return this
     }
@@ -74,7 +75,7 @@ export default abstract class BaseFormat {
      * @returns {this} The instance of the class to allow method chaining.
      */
     protected toggleIsSecret() {
-        this.options.isSecret = !this.options.isSecret;
+        this.isSecret = !this.isSecret;
 
         return this
     }
@@ -112,7 +113,7 @@ export default abstract class BaseFormat {
         this.mergeOptions(options);
         this.value = value;
 
-        if (!this.options.isSecret) {
+        if (!this.isSecret) {
             this.setOriginalValueBucket(value, key)
         }
 
@@ -160,16 +161,30 @@ export default abstract class BaseFormat {
             end += escapeEnd;
         }
 
+        let specialCharacterIndexes = [];
         if (specialCharacter !== undefined) {
             specialCharacter.forEach((char) => {
-                const regex = new RegExp(`\\${char}`, 'g');
-                value = value.replace(regex, '*');
+                let regex = new RegExp(`\\${char}`, 'g');
+                let match;
+                while ((match = regex.exec(value)) != null) {
+                    specialCharacterIndexes.push(match.index);
+                }
             });
         }
 
         if (isVisible) {
             const regex = new RegExp(`(.{${start}})(.*)(?=.{${end}})`);
-            return value.replace(regex, (_, a, b) => a + '*'.repeat(b.length));
+            return value.replace(regex, (_, a, b) => {
+                let secretPart = '';
+                for (let i = 0; i < b.length; i++) {
+                    if (specialCharacterIndexes.includes(i + start)) {
+                        secretPart += b[i];
+                    } else {
+                        secretPart += '*';
+                    }
+                }
+                return a + secretPart;
+            });
         } else {
             const visibleMiddle = value.slice(start, -end);
             const secretStartPart = '*'.repeat(start);
@@ -236,7 +251,7 @@ export default abstract class BaseFormat {
      * @returns {string} The value formatted as a numeric string.
      */
     public numeric(value: string): string {
-        const searchValue = this.options.isSecret ? /[^\d*]/g : /\D/g;
+        const searchValue = this.isSecret ? /[^\d*]/g : /\D/g;
         return value.replace(searchValue, '');
     }
 
@@ -246,7 +261,7 @@ export default abstract class BaseFormat {
      * @returns {string} The value formatted as a letters string.
      */
     public letters(value: string): string {
-        const searchValue = this.options.isSecret ? /[^a-zA-Z*]/g : /[^a-zA-Z]/g;
+        const searchValue = this.isSecret ? /[^a-zA-Z*]/g : /[^a-zA-Z]/g;
         return value.replace(searchValue, '');
     }
 
