@@ -157,7 +157,7 @@ console.log(cardNumber); // Outputs: 1234 5678 1234 5678
 
 ```javascript
 const secretCardNumber = format.secretCardNumber('1234567812345678');
-console.log(secretCardNumber); // Outputs: **** 5678 1234 ****
+console.log(secretCardNumber); // Outputs: **** **** **** 5678
 ```
 
 ### Secret Email

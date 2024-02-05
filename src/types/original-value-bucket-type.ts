@@ -5,6 +5,8 @@ export type OriginalValueBucket = 'cpf'
     | 'realCurrency'
     | 'percent'
     | 'cardNumber'
+    | 'email'
+    | 'oab'
     | string;
 
 export default OriginalValueBucket;

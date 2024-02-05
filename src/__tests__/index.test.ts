@@ -81,7 +81,7 @@ describe('Format', () => {
 
     test('should format secret card number correctly', () => {
         const cardNumber = '1234567812345678';
-        expect(format.secretCardNumber(cardNumber)).toBe('**** 5678 1234 ****');
+        expect(format.secretCardNumber(cardNumber)).toBe('**** **** **** 5678');
         expect(format.getValueBeforeFormat('cardNumber')).toBe(cardNumber);
     });
 

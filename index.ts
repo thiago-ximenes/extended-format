@@ -75,7 +75,7 @@ class Format extends BaseFormat {
     }
 
     secretCardNumber(value: string): string {
-        return this.secretFor(value, {start: 4, end: 4, isVisible: false});
+        return this.secretFor(value, {start: 0, end: 4});
     }
 
     secretEmail(value: string): string {
