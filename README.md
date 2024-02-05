@@ -1,5 +1,35 @@
 # Extended Format
 
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [CPF](#cpf)
+  - [Secret CPF](#secret-cpf)
+  - [CNPJ](#cnpj)
+  - [Secret CNPJ](#secret-cnpj)
+  - [Phone Number](#phone-number)
+  - [Secret Phone Number](#secret-phone-number)
+  - [CEP](#cep)
+  - [Secret CEP](#secret-cep)
+  - [BRL Currency](#brl-currency)
+  - [Secret BRL Currency](#secret-brl-currency)
+  - [Percentage](#percentage)
+  - [Secret Percentage](#secret-percentage)
+  - [Card Number](#card-number)
+  - [Secret Card Number](#secret-card-number)
+  - [Secret Email](#secret-email)
+- [Creating Custom Formats](#creating-custom-formats)
+  - [Options](#options)
+- [Creating Custom Secret Formats](#creating-custom-secret-formats)
+- [Creating Custom Special Secret Formats](#creating-custom-special-secret-formats)
+- [Getting the Original Value](#getting-the-original-value)
+- [Extending Formats](#extending-formats)
+- [Protected Methods](#protected-methods)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Introduction
 
 This package provides a set of formatting utilities for various types of data, such as CPF, CNPJ, phone numbers, CEP,
