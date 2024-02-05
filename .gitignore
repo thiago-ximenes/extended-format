@@ -94,3 +94,5 @@ dist
 .pnp.*
 
 .idea
+
+.lib

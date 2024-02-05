@@ -1,14 +1,15 @@
 {
   "name": "extended-format",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A helper lib to turn easy format strings",
-  "main": "index.ts",
+  "main": "./lib/index.js",
   "repository": "git@github.com:thiago-ximenes/format.git",
   "author": "Thiago Ximenes",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "npx tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
