@@ -81,6 +81,16 @@ class Format extends BaseFormat {
     secretEmail(value: string): string {
         return this.special(value, {start: [2, 1], end: 0, specialCharacter: ['@', '.']});
     }
+
+    oab(value: string): string {
+        return this.format(value, '###.###', {
+            uppercase: true,
+        });
+    }
+
+    secretOab(value: string): string {
+        return this.secretFor(value, {start: 2, end: 1});
+    }
 }
 
 export default Format;

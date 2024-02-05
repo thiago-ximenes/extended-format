@@ -1,4 +1,4 @@
-import {format} from '../..';
+import {format} from '../../';
 
 describe('Format', () => {
     test('should format CPF correctly', () => {
@@ -89,5 +89,17 @@ describe('Format', () => {
         const email = 'example@example.com';
         expect(format.secretEmail(email)).toBe('ex*****@e******.com');
         expect(format.getValueBeforeFormat('email')).toBe(email);
+    });
+
+    test('should format OAB correctly', () => {
+        const oab = '123456';
+        expect(format.oab(oab)).toBe('123.456');
+        expect(format.getValueBeforeFormat('oab')).toBe(oab);
+    });
+
+    test('should format secret OAB correctly', () => {
+        const oab = '123456';
+        expect(format.secretOab(oab)).toBe('12*.**6');
+        expect(format.getValueBeforeFormat('oab')).toBe(oab);
     });
 });

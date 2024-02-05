@@ -167,6 +167,20 @@ const secretEmail = format.secretEmail('example@example.com');
 console.log(secretEmail); // Outputs: ex*****@e******.com
 ```
 
+### OAB
+
+```javascript
+const oab = format.oab('123456');
+console.log(oab); // Outputs: 123456
+```
+
+### Secret OAB
+
+```javascript
+const secret = format.secretOab('123456');
+console.log(secret); // Outputs: ******
+```
+
 ## Creating Custom Formats
 
 You can create custom formats by using the `format` method. This method receives a string with the pattern and returns a
@@ -184,6 +198,8 @@ The third parameter of the `format` method is an object with options. The follow
 - onlyNumbers: If set to true, only numbers will be considered for formatting. Default is false.
 - patternSeparator: Defines the character used to separate the pattern. Default is #.
 - onlyLetters: If set to true, only letters will be considered for formatting. Default is false.
+- uppercase: If set to true, the letters will be converted to uppercase. Default is false.
+- lowercase: If set to true, the letters will be converted to lowercase. Default is false.
 
 ```javascript
 const customFormat = format.format('12345asd678dasd901', '###.###.###-##', {onlyNumbers: true});
@@ -337,7 +353,7 @@ Important to say that the method `secretFor` is for methods that use `format` me
 - secretFrom: Formats a string in a way that part of it is replaced by asterisks (*), making it "secret". This method
   get an already existing method with the same name and add the secret options to it. The difference between `secretFor`
   and `secretFrom` is that `secretFrom` is for methods that don't use `format` method behind the scenes like Intl
-  methods for example. We dont need to reinvent the wheel, we just need to add the secret options to it.
+  methods for example. We don't need to reinvent the wheel, we just need to add the secret options to it.
 
 ```javascript
 import Format from 'extended-format';

@@ -123,7 +123,10 @@ export default abstract class BaseFormat {
 
         if (!this.value) return this.value;
 
-        this.handleNumeric().handleLetters();
+        this.handleNumeric()
+            .handleLetters()
+            .handleUppercase()
+            .handleLowercase();
 
         const patternSeparator = this.options.patternSeparator || '#';
 
@@ -266,6 +269,24 @@ export default abstract class BaseFormat {
     }
 
     /**
+     * Formats the value as an uppercase string.
+     * @param {string} value - The value to be formatted.
+     * @returns {string} The value formatted as an uppercase string.
+     */
+    public uppercase(value: string): string {
+        return value.toUpperCase();
+    }
+
+    /**
+     * Formats the value as a lowercase string.
+     * @param {string} value - The value to be formatted.
+     * @returns {string} The value formatted as a lowercase string.
+     */
+    public lowercase(value: string): string {
+        return value.toLowerCase();
+    }
+
+    /**
      * Merges the provided options with the current options.
      * @param {OptionsType} options - The options to be merged.
      * @returns {this} The instance of the class to allow method chaining.
@@ -298,6 +319,32 @@ export default abstract class BaseFormat {
     private handleLetters() {
         if (this.options.onlyLetters && !this.options.onlyNumbers) {
             this.value = this.letters(this.value);
+        }
+
+        return this
+    }
+
+    /**
+     * Handles the uppercase formatting of the value.
+     * @returns {this} The instance of the class to allow method chaining.
+     * @private
+     */
+    private handleUppercase() {
+        if (this.options.uppercase && !this.options.lowercase) {
+            this.value = this.uppercase(this.value);
+        }
+
+        return this
+    }
+
+    /**
+     * Handles the lowercase formatting of the value.
+     * @returns {this} The instance of the class to allow method chaining.
+     * @private
+     */
+    private handleLowercase() {
+        if (this.options.lowercase && !this.options.uppercase) {
+            this.value = this.lowercase(this.value);
         }
 
         return this

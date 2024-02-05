@@ -111,4 +111,20 @@ describe('Format', () => {
     test('should return formatted secret string for special characters', () => {
         expect(format.secret('example-example.com', {start: 2, end: 0, escapeEnd: 3, specialCharacter: ['-', '.']})).toBe('ex*****-*******.com');
     })
+
+    test('should return formatted lower case string', () => {
+        expect(format.lowercase('EXAMPLE')).toBe('example');
+    });
+
+    test('should return formatted upper case string', () => {
+        expect(format.uppercase('example')).toBe('EXAMPLE');
+    });
+
+    test('should return formatted string for lower case option', () => {
+        expect(format.format('EXAMPLE', '###', {lowercase: true})).toBe('exa');
+    });
+
+    test('should return formatted string for upper case option', () => {
+        expect(format.format('example', '###', {uppercase: true})).toBe('EXA');
+    });
 });
