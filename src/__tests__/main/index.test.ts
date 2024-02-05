@@ -84,7 +84,7 @@ describe('Format', () => {
     });
 
     test('should return special secret string when value is not empty', () => {
-        expect(format.specialSecret('example@example.com', {
+        expect(format.special('example@example.com', {
             start: [2, 1],
             end: 0,
             specialCharacter: ['@', '.']

@@ -200,7 +200,7 @@ export default abstract class BaseFormat {
      * @param {string} [key] - The key to store the original value.
      * @returns {string} The value formatted as a special secret string.
      */
-    public specialSecret(value: string, secretOptions: SpecialSecretOptionsType, key?: string): string {
+    public special(value: string, secretOptions: SpecialSecretOptionsType, key?: string): string {
         this.setOriginalValueBucket(value, key);
         let {start, end, specialCharacter} = secretOptions;
 

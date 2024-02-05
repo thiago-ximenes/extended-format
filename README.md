@@ -35,6 +35,7 @@ Then, you can use the methods provided by the package to format your data:
 ```javascript
 const cpf = format.cpf('12345678909');
 console.log(cpf); // Outputs: 123.456.789-09
+console.log(format.getValueBeforeFormat('cpf')); // Outputs: 12345678909
 ```
 
 ### Secret CPF
@@ -179,12 +180,13 @@ console.log(format.getValueBeforeFormat('cpf')); // Outputs: 12345678901
 
 ## Creating Custom Secret Formats
 
-The method `secret` is used to format a string in a way that part of it is replaced by asterisks (*), making it "secret".
+The method `secret` is used to format a string in a way that part of it is replaced by asterisks (*), making it "
+secret".
 It accepts three parameters: value, secretOptions, and key. The secretOptions parameter is an object that can have the
 following properties:
 
 - start: The number of characters at the start of the string that should not be replaced by asterisks.
-  isVisible: If set to true, the characters between the start and end will be replaced by asterisks. If set to false,
+- isVisible: If set to true, the characters between the start and end will be replaced by asterisks. If set to false,
   the characters at the start and end will be replaced by asterisks. Default is true.
 - end: The number of characters at the end of the string that should not be replaced by asterisks.
 - escapeStart: The number of additional characters at the start of the string that should be replaced by asterisks.
@@ -192,41 +194,52 @@ following properties:
 - specialCharacter: An array of special characters that should be replaced by asterisks.
 
 ```javascript
-const secret = format.secret('1234567890', { start: 2, end: 2 });
+const secret = format.secret('1234567890', {start: 2, end: 2});
 console.log(secret); // Outputs: "**345678**"
 ```
 
 ```javascript
-const secret = format.secret('1234567890', { start: 2, end: 2, isVisible: true });
+const secret = format.secret('1234567890', {start: 2, end: 2, isVisible: true});
 console.log(secret); // Outputs: "12******90" 
 ```
 
 ```javascript
-const secret = format.secret('123-456-7890', { start: 2, end: 2, specialCharacter: ['-'] });
+const secret = format.secret('123-456-7890', {start: 2, end: 2, specialCharacter: ['-']});
 console.log(secret); // Outputs: "**3-456-78**"
 ```
 
 ## Creating Custom Special Secret Formats
 
-The `specialSecret` method is used to format a string in a way that part of it is replaced by asterisks (*), making it "secret". This method accepts three parameters: value, secretOptions, and key.  The value is the string that you want to format. The secretOptions is an object that can have the following properties:  
-start: An array or a single number indicating the number of characters at the start of each segment that should not be replaced by asterisks.
-end: An array or a single number indicating the number of characters at the end of each segment that should not be replaced by asterisks.
+The `specialSecret` method is used to format a string in a way that part of it is replaced by asterisks (*), making it "
+secret". This method accepts three parameters: value, secretOptions, and key. The value is the string that you want to
+format. The secretOptions is an object that can have the following properties:  
+start: An array or a single number indicating the number of characters at the start of each segment that should not be
+replaced by asterisks.
+end: An array or a single number indicating the number of characters at the end of each segment that should not be
+replaced by asterisks.
 specialCharacter: An array of special characters that should be preserved and used to split the string into segments.
-The method works by first splitting the value into segments based on the specialCharacter. Then, for each segment, it replaces the middle part with asterisks, preserving the start and end characters. Finally, it joins the segments back together, inserting the specialCharacter between them.  The key parameter is optional and is used to store the original value before formatting.
+The method works by first splitting the value into segments based on the specialCharacter. Then, for each segment, it
+replaces the middle part with asterisks, preserving the start and end characters. Finally, it joins the segments back
+together, inserting the specialCharacter between them. The key parameter is optional and is used to store the original
+value before formatting.
 
 ```javascript
-const secret = format.special('example@example.com', { start: [2, 1], end: 0, specialCharacter: ['@', '.'] });
+const secret = format.special('example@example.com', {start: [2, 1], end: 0, specialCharacter: ['@', '.']});
 console.log(secret); // Outputs: "ex****@e****.com"
 ```
 
 ## Getting the Original Value
 
-The `getValueBeforeFormat` method is used to get the original value before formatting. It accepts a key parameter that is the name of the key of the original value in the bucket.
+The `getValueBeforeFormat` method is used to get the original value before formatting. It accepts a key parameter that
+is the name of the key of the original value in the bucket.
 
 ```javascript
 format.format('12345678901', '###.###.###-##', 'cpf');
 console.log(format.getValueBeforeFormat('cpf')); // Outputs: 12345678901
 ```
+
+For default, the key is the name of the method used to format the value if you use the method of the class custom or
+not.
 
 ```javascript
 // For method of class
@@ -238,21 +251,81 @@ console.log(format.getValueBeforeFormat('cpf')); // Outputs: 12345678901
 
 ## Extending Formats
 
-You can extend the formats provided by the package by adding new methods to the format object. For example, you can add a method to format a passport number:
+You can extend the formats provided by the package by adding new methods to the format object. For example, you can add
+a method to format a passport number:
 
 ```javascript
 import Format from 'extended-format';
 
 class MyFormat extends Format {
-  passport(value) {
-    return this.format(value, '####-####');
-  }
+    passport(value) {
+        return this.format(value, '####-####');
+    }
 }
 
 const format = new MyFormat();
 const passport = format.passport('AB123456');
 console.log(passport); // Outputs: AB12-3456
 ```
+
+## Protected Methods
+
+The recommended way to extend the formats provided by the package is to create a new class that extends the Format
+class. Local custom methods are good for asap solutions, but if you want to use the same method in different places, it
+is better to create a new class.
+
+For it, you can use the protected methods of the class Format to facilitate the creation of new methods.
+
+You also can override the protected methods to change the behavior of the class.
+
+The protected methods are:
+
+- secretFor: Formats a string in a way that part of it is replaced by asterisks (*), making it "secret". This method get
+  an already existing method with the same name and add the secret options to it.
+
+```javascript
+import Format from 'extended-format';
+
+class MyFormat extends Format {
+    secretCpf(value) {
+        return this.secretFor(value, {start: 3, end: 2});
+    }
+}
+
+const format = new MyFormat();
+const secret = format.secretCpf('12345678901');
+
+console.log(secret); // Outputs: ***.456.789-**
+```
+
+Because of format.cpf already exists, the method cpfSecret use it behind the scenes and add the secret options to it.
+To use this approach, you need to create the new method starting with the word secret and the name of the method that
+you want to use behind the scenes.
+
+Important to say that the method `secretFor` is for methods that use `format` method behind the scenes.
+
+- secretFrom: Formats a string in a way that part of it is replaced by asterisks (*), making it "secret". This method
+  get an already existing method with the same name and add the secret options to it. The difference between `secretFor`
+  and `secretFrom` is that `secretFrom` is for methods that don't use `format` method behind the scenes like Intl
+  methods for example. We dont need to reinvent the wheel, we just need to add the secret options to it.
+
+```javascript
+import Format from 'extended-format';
+
+class MyFormat extends Format {
+
+  secretCurrency(value) {
+    return this.secretFrom(value, {start: 1, escapeStart: 2, end: 3, isVisible: true});
+  }
+}
+
+const format = new MyFormat();
+
+const secret = format.secretCurrency('123456');
+
+console.log(secret); // Outputs: R$ ***,56
+```
+
 
 ## Contributing
 

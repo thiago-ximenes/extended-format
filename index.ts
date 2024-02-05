@@ -79,7 +79,7 @@ class Format extends BaseFormat {
     }
 
     secretEmail(value: string): string {
-        return this.specialSecret(value, {start: [2, 1], end: 0, specialCharacter: ['@', '.']});
+        return this.special(value, {start: [2, 1], end: 0, specialCharacter: ['@', '.']});
     }
 }
 
